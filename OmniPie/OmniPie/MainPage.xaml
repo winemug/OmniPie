@@ -6,10 +6,39 @@
              mc:Ignorable="d"
              x:Class="OmniPie.MainPage">
 
-    <StackLayout>
-        <Button Text="Connect to Omnipy" Command="{Binding ConnectCommand}"/>
-        <Button Text="Cancel Connection" Command="{Binding CancelConnectCommand}"/>
-        <Label Text="{Binding ConnectionResult}"></Label>
-    </StackLayout>
+    <ScrollView>
+        <StackLayout>
+            <Label Text="OmniPy Address:"/>
+            <StackLayout Orientation="Horizontal">
+                <Entry Text="{Binding Host}" WidthRequest="180"/>
+                <Button Text="Locate" Command="{Binding LocateCommand}" IsEnabled="{Binding LocateEnabled}"/>
+            </StackLayout>
+            <Label Text="Password:"/>
+            <StackLayout Orientation="Horizontal">
+                <Entry Text="{Binding Password}" IsPassword="True" WidthRequest="180"/>
+            </StackLayout>
 
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Read Status" Command="{Binding StatusCommand}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Rate: "/>
+                <Entry Text="{Binding TempBasalRate}"/>
+                <Label Text="Hours: "/>
+                <Entry Text="{Binding TempBasalDuration}"/>
+                <Button Text="Set Temp Basal" Command="{Binding SetTempBasalCommand}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+            </StackLayout>
+            <StackLayout>
+                <Label Text="Debug Output:"/>
+                <Label Text="{Binding DebugOut}"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
