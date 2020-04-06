@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "NFlqMs6OK2tu/CJS28f6QvLrHKhdHt1Y/w/LL6wVpIA8Vi4f4A1JPgOrkcRe9W7Od3U5Qt/Mvu/P+N4vQNCg9w==",
+  "success": true,
+  "projectFilePath": "C:\\dev\\OmniPie\\OmniPie\\OmniPie.iOS\\OmniPie.iOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kurtl\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\kurtl\\.nuget\\packages\\xamarin.essentials\\1.3.1\\xamarin.essentials.1.3.1.nupkg.sha512",
+    "C:\\Users\\kurtl\\.nuget\\packages\\xamarin.forms\\4.4.0.991265\\xamarin.forms.4.4.0.991265.nupkg.sha512"
+  ],
+  "logs": []
+}
