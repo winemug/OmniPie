@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OmniPie.ViewModels;
 using Xamarin.Forms;
 
 namespace OmniPie
@@ -16,6 +17,7 @@ namespace OmniPie
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new MainPageModel();
         }
     }
 }

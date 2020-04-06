@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
@@ -25,6 +26,8 @@ namespace OmniPie.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            var androidPreferences = GetPreferences(FileCreationMode.Private);
+            var droidConfiguration = new DroidConfiguration(androidPreferences);
             DependencyService.Register<IConfiguration, DroidConfiguration>();
             LoadApplication(new App());
         }

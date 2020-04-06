@@ -8,6 +8,8 @@
 
     <StackLayout>
         <Button Text="Connect to Omnipy" Command="{Binding ConnectCommand}"/>
+        <Button Text="Cancel Connection" Command="{Binding CancelConnectCommand}"/>
+        <Label Text="{Binding ConnectionResult}"></Label>
     </StackLayout>
 
 </ContentPage>

@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using OmniPie.Interfaces;
@@ -15,19 +16,25 @@ namespace OmniPie.Droid.Platform
 {
     public class DroidConfiguration : IConfiguration
     {
+        private readonly ISharedPreferences SharedPreferences;
+        public DroidConfiguration(ISharedPreferences sharedPreferences)
+        {
+            SharedPreferences = sharedPreferences;
+        }
         public void AddOrUpdate(string key, string data)
         {
-            throw new NotImplementedException();
+            SharedPreferences.Edit().PutString(key, data).Commit();
         }
 
         public void AddOrUpdate(string key, byte[] data)
         {
-            throw new NotImplementedException();
+            var dataString = Base64.EncodeToString(data, Base64Flags.Default);
+            SharedPreferences.Edit().PutString(key, dataString).Commit();
         }
 
         public void AddOrUpdate(string key, int data)
         {
-            throw new NotImplementedException();
+            SharedPreferences.Edit().PutInt(key, data).Commit();
         }
 
         public void AddOrUpdate(string key, long data)
