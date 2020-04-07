@@ -49,5 +49,11 @@ namespace OmniPie.Api
                 }
             });
         }
+        
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            CanConnectSubject.OnNext(true);
+        }
     }
 }
