@@ -17,7 +17,7 @@ namespace OmniPie
         public OmniPyPage()
         {
             InitializeComponent();
-            BindingContext = new OmniPyViewModel();
+            new OmniPyViewModel(this);
         }
     }
 }

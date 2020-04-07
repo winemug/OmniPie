@@ -13,13 +13,23 @@ namespace OmniPie.ViewModels
     public class HistoryViewModel : BaseViewModel
     {
         public ICommand DownloadHistoryCommand { get; set; }
-        public ICommand ShowHistoryCommand { get; set; }
         public IEnumerable<OmniPyHistoryEntry> Entries { get; set; }
 
-        public HistoryViewModel()
+        public HistoryViewModel(Page page) : base(page)
         {
-            DownloadHistoryCommand = new Command(async () => DebugOut = await Client.DownloadHistory(), () => true);
-            ShowHistoryCommand = new Command(async () => Entries = await Client.ReadHistory(), () => true);
+            DownloadHistoryCommand = new Command(async () =>
+            {
+                DebugOut = await Client.DownloadHistory();
+                Entries = await Client.ReadHistory();
+            });
+        }
+
+        protected override async void OnPageAppearing()
+        {
+            if (Entries == null)
+            {
+                Entries = await Client.ReadHistory();
+            }
         }
     }
 }

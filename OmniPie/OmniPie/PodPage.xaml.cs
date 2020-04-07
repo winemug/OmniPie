@@ -15,7 +15,7 @@ namespace OmniPie
         public PodPage()
         {
             InitializeComponent();
-            BindingContext = new PodViewModel();
+            new PodViewModel(this);
         }
     }
 }

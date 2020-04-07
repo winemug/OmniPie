@@ -18,26 +18,6 @@
                 <Entry Text="{Binding Password}" IsPassword="True" WidthRequest="180"/>
                 <Button Text="Verify" Command="{Binding VerifyConnectionCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
-
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Read Status" Command="{Binding StatusCommand}" IsEnabled="{Binding ClientCanConnect}"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Rate: "/>
-                <Entry Text="{Binding TempBasalRate}" WidthRequest="80"/>
-                <Label Text="Hours: "/>
-                <Entry Text="{Binding TempBasalDuration}" WidthRequest="80"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Set Temp Basal" Command="{Binding SetTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
-                <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Download History" Command="{Binding DownloadHistoryCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
-                <Button Text="Show History" Command="{Binding ShowHistoryCommand}"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-            </StackLayout>
             <StackLayout>
                 <Label Text="Debug Output:"/>
                 <Label Text="{Binding DebugOut}"/>

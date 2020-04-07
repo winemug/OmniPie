@@ -15,7 +15,7 @@ namespace OmniPie
         public HistoryPage()
         {
             InitializeComponent();
-            BindingContext = new HistoryViewModel();
+            new HistoryViewModel(this);
         }
     }
 }

@@ -4,13 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:omniPie="clr-namespace:OmniPie;assembly=OmniPie"
              x:Class="OmniPie.AppShell">
-    <ShellContent Title="Pod">
-        <omniPie:PodPage />
-    </ShellContent>
-    <ShellContent Title="History">
-        <omniPie:HistoryPage />
-    </ShellContent>
-    <ShellContent Title="OmniPy">
-        <omniPie:OmniPyPage />
-    </ShellContent>
+    <FlyoutItem Title="OmniPie">
+        <ShellContent Title="Pod">
+            <omniPie:PodPage />
+        </ShellContent>
+        <ShellContent Title="History">
+            <omniPie:HistoryPage />
+        </ShellContent>
+        <ShellContent Title="OmniPy">
+            <omniPie:OmniPyPage />
+        </ShellContent>
+    </FlyoutItem>
 </Shell>

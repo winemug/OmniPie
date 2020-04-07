@@ -29,7 +29,7 @@ namespace OmniPie.ViewModels
         public ICommand LocateCommand { get; set; }
         public ICommand VerifyConnectionCommand { get; set; }
 
-        public OmniPyViewModel()
+        public OmniPyViewModel(Page page) : base(page)
         {
             LocateCommand = new Command(async () => await Locate(), () => true);
 

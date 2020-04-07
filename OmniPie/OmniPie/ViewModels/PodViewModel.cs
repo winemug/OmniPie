@@ -12,7 +12,7 @@ namespace OmniPie.ViewModels
         public ICommand SetTempBasalCommand { get; set;}
         public ICommand CancelTempBasalCommand { get; set; }
 
-        public PodViewModel()
+        public PodViewModel(Page page) : base(page)
         {
             StatusCommand = new Command(async () => DebugOut = await Client.UpdateStatus(), () => true);
             SetTempBasalCommand = new Command(async () => DebugOut = await Client.SetTempBasal(TempBasalRate, TempBasalDuration), () => true);

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:api="clr-namespace:OmniPie.Api;assembly=OmniPie"
              mc:Ignorable="d"
              x:Class="OmniPie.HistoryPage">
     <ContentPage.Content>
@@ -10,9 +11,25 @@
             <StackLayout>
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Download History" Command="{Binding DownloadHistoryCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
-                    <Button Text="Show History" Command="{Binding ShowHistoryCommand}"/>
                 </StackLayout>
-                <CollectionView ItemsSource="{Binding Entries}"/>
+                <CollectionView ItemsSource="{Binding Entries}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="api:OmniPyHistoryEntry">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Timestamp}" Grid.Column="0"/>
+                                <Label Text="{Binding Progress}" Grid.Column="1"/>
+                                <Label Text="{Binding Command}" Grid.Column="2"/>
+                                <Label Text="{Binding Delivered}" Grid.Column="3"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
