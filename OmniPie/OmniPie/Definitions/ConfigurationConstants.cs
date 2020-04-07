@@ -6,7 +6,7 @@ namespace OmniPie.Definitions
 {
     public static class ConfigurationConstants
     {
-        public static string OmniPyKey = "OmniPyKey";
         public static string OmniPyAddress = "OmniPyAddress";
+        public static string OmniPyPassword = "OmniPyPassword";
     }
 }

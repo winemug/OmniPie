@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -15,8 +16,6 @@ using System.Windows.Input;
 using OmniPie.Annotations;
 using OmniPie.Api;
 using OmniPie.Definitions;
-using OmniPie.Interfaces;
-using Renci.SshNet;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -26,29 +25,71 @@ namespace OmniPie.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Host { get; set; } = "";
-        public string Password { get; set; }= "omnipy";
+        public string Host { get; set; }
+        public string Password { get; set; }
+
         public ICommand LocateCommand { get; set; }
-        public bool LocateEnabled { get; set; }
+        public bool ClientCanConnect { get; set; }
 
         public decimal TempBasalRate { get; set; } = 0m;
 
         public decimal TempBasalDuration { get; set; } = 2m;
 
+        public ICommand VerifyConnectionCommand { get; set; }
         public ICommand StatusCommand { get; set; }
         public ICommand SetTempBasalCommand { get; set;}
         public ICommand CancelTempBasalCommand { get; set; }
 
         public string DebugOut { get; set; }
 
+        private readonly OmniPyClient Client;
+
         public MainPageModel()
         {
             LocateCommand = new Command(async () => await Locate(), () => true);
-            LocateEnabled = true;
-            StatusCommand = new Command(async () => await UpdateStatus(), () => true);
-            SetTempBasalCommand = new Command(async () => await SetTempBasal(TempBasalRate, TempBasalDuration), () => true);
-            CancelTempBasalCommand = new Command(async () => await CancelTempBasal(), () => true);
+
+            Client = new OmniPyClient();
+            Client.WhenClientCanConnectChanged().Subscribe(canConnect => { ClientCanConnect = canConnect; });
+
+            PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(Host):
+                    case nameof(Password):
+                        Preferences.Set(ConfigurationConstants.OmniPyAddress, Host);
+                        Preferences.Set(ConfigurationConstants.OmniPyPassword, Password);
+                        Client.SetConnectionInfo(Host, Password);
+                        break;
+                    //case nameof(TempBasalDuration):
+                    //    if (TempBasalDuration < 0.5m)
+                    //        TempBasalDuration = 0.5m;
+                    //    if (TempBasalDuration > 12m)
+                    //        TempBasalDuration = 12m;
+
+                    //    TempBasalDuration = Math.Round(TempBasalDuration * 2) / 2m;
+                    //    break;
+                    //case nameof(TempBasalRate):
+                    //    if (TempBasalRate < 0m)
+                    //        TempBasalRate = 0m;
+                    //    if (TempBasalRate > 30m)
+                    //        TempBasalRate = 30m;
+                    //    TempBasalRate = Math.Round(TempBasalDuration * 20) / 20m;
+                    //    break;
+                }
+            };
+
+            Host = Preferences.Get(ConfigurationConstants.OmniPyAddress, "");
+            Password = Preferences.Get(ConfigurationConstants.OmniPyPassword, "omnipy");
+            Client.SetConnectionInfo(Host, Password);
+
+            VerifyConnectionCommand = new Command(async() => DebugOut = await Client.VerifyConnection());
+            StatusCommand = new Command(async () => DebugOut = await Client.UpdateStatus(), () => true);
+            SetTempBasalCommand = new Command(async () => DebugOut = await Client.SetTempBasal(TempBasalRate, TempBasalDuration), () => true);
+            CancelTempBasalCommand = new Command(async () => DebugOut = await Client.CancelTempBasal(), () => true);
+
         }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -57,7 +98,7 @@ namespace OmniPie.ViewModels
 
         private async Task Locate()
         {
-            LocateEnabled = false;
+            ClientCanConnect = false;
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             try
             {
@@ -73,47 +114,10 @@ namespace OmniPie.ViewModels
             finally
             {
                 cts.Dispose();
-                LocateEnabled = true;
+                ClientCanConnect = await Client.WhenClientCanConnectChanged().FirstAsync();
             }
         }
 
-        public async Task UpdateStatus()
-        {
-            using (var client = new SshClient(Host, "pi", Password))
-            {
-                client.HostKeyReceived += (sender, e) =>
-                {
-                    e.CanTrust = true;
-                };
-                client.Connect();
-                DebugOut = client.RunCommand("cd ~/omnipy && ./omni.py status").Result;
-            }
-        }
-        public async Task SetTempBasal(decimal rate, decimal durationHours)
-        {
-            using (var client = new SshClient(Host, "pi", Password))
-            {
-                client.HostKeyReceived += (sender, e) =>
-                {
-                    e.CanTrust = true;
-                };
-                client.Connect();
-                DebugOut = client.RunCommand($"cd ~/omnipy && ./omni.py tempbasal {rate.ToString(CultureInfo.InvariantCulture)} {durationHours.ToString(CultureInfo.InvariantCulture)}").Result;
-            }
-        }
-
-        public async Task CancelTempBasal()
-        {
-            using (var client = new SshClient(Host, "pi", Password))
-            {
-                client.HostKeyReceived += (sender, e) =>
-                {
-                    e.CanTrust = true;
-                };
-                client.Connect();
-                DebugOut = client.RunCommand("cd ~/omnipy && ./omni.py canceltempbasal").Result;
-            }
-        }
         private async Task<string> Discover(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();

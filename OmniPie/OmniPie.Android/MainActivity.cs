@@ -7,8 +7,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using OmniPie.Droid.Platform;
-using OmniPie.Interfaces;
 using Xamarin.Forms;
 
 namespace OmniPie.Droid
@@ -26,9 +24,6 @@ namespace OmniPie.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            var androidPreferences = GetPreferences(FileCreationMode.Private);
-            var droidConfiguration = new DroidConfiguration(androidPreferences);
-            DependencyService.Register<IConfiguration, DroidConfiguration>();
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

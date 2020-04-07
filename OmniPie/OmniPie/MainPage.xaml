@@ -11,25 +11,26 @@
             <Label Text="OmniPy Address:"/>
             <StackLayout Orientation="Horizontal">
                 <Entry Text="{Binding Host}" WidthRequest="180"/>
-                <Button Text="Locate" Command="{Binding LocateCommand}" IsEnabled="{Binding LocateEnabled}"/>
+                <Button Text="Locate" Command="{Binding LocateCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <Label Text="Password:"/>
             <StackLayout Orientation="Horizontal">
                 <Entry Text="{Binding Password}" IsPassword="True" WidthRequest="180"/>
+                <Button Text="Verify" Command="{Binding VerifyConnectionCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
-                <Button Text="Read Status" Command="{Binding StatusCommand}"/>
+                <Button Text="Read Status" Command="{Binding StatusCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Rate: "/>
-                <Entry Text="{Binding TempBasalRate}"/>
+                <Entry Text="{Binding TempBasalRate}" WidthRequest="80"/>
                 <Label Text="Hours: "/>
-                <Entry Text="{Binding TempBasalDuration}"/>
-                <Button Text="Set Temp Basal" Command="{Binding SetTempBasalCommand}"/>
+                <Entry Text="{Binding TempBasalDuration}" WidthRequest="80"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"/>
+                <Button Text="Set Temp Basal" Command="{Binding SetTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+                <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
             </StackLayout>
