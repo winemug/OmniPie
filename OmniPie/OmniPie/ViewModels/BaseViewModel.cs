@@ -1,24 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using OmniPie.Annotations;
 using OmniPie.Api;
 
 namespace OmniPie.ViewModels
 {
-    public class HistoryPageModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
-        private IEnumerable<OmniPyHistoryEntry> Entries { get; }
-
-        public HistoryPageModel(IEnumerable<OmniPyHistoryEntry> entries)
-        {
-            Entries = entries;
-        }
+        public bool ClientCanConnect { get; set; }
+        public string DebugOut { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        protected readonly OmniPyClient Client;
+
+        public BaseViewModel()
+        {
+            Client = OmniPyClient.Get();
+            Client.WhenClientCanConnectChanged().Subscribe(canConnect => { ClientCanConnect = canConnect; });
+
+        }
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

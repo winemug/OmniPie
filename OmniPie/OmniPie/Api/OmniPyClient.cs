@@ -22,6 +22,15 @@ namespace OmniPie.Api
 
         public IObservable<bool> WhenClientCanConnectChanged() => ClientCanConnectSubject.AsObservable();
 
+        private OmniPyClient()
+        {
+        }
+
+        private static OmniPyClient Instance = new OmniPyClient();
+        public static OmniPyClient Get()
+        {
+            return Instance;
+        }
         public void SetConnectionInfo(string host, string password)
         {
             Host = host;

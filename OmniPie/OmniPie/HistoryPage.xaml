@@ -6,10 +6,14 @@
              mc:Ignorable="d"
              x:Class="OmniPie.HistoryPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Download History" Command="{Binding DownloadHistoryCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+                    <Button Text="Show History" Command="{Binding ShowHistoryCommand}"/>
+                </StackLayout>
+                <CollectionView ItemsSource="{Binding Entries}"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

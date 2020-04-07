@@ -21,36 +21,17 @@ using Xamarin.Forms;
 
 namespace OmniPie.ViewModels
 {
-    public class MainPageModel : INotifyPropertyChanged
+    public class OmniPyViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public string Host { get; set; }
         public string Password { get; set; }
 
         public ICommand LocateCommand { get; set; }
-        public bool ClientCanConnect { get; set; }
-
-        public decimal TempBasalRate { get; set; } = 0m;
-
-        public decimal TempBasalDuration { get; set; } = 2m;
-
         public ICommand VerifyConnectionCommand { get; set; }
-        public ICommand StatusCommand { get; set; }
-        public ICommand SetTempBasalCommand { get; set;}
-        public ICommand CancelTempBasalCommand { get; set; }
-        public ICommand DownloadHistoryCommand { get; set; }
-        public ICommand ShowHistoryCommand { get; }
-        public string DebugOut { get; set; }
 
-        private readonly OmniPyClient Client;
-
-        public MainPageModel()
+        public OmniPyViewModel()
         {
             LocateCommand = new Command(async () => await Locate(), () => true);
-
-            Client = new OmniPyClient();
-            Client.WhenClientCanConnectChanged().Subscribe(canConnect => { ClientCanConnect = canConnect; });
 
             PropertyChanged += (sender, args) =>
             {
@@ -62,21 +43,6 @@ namespace OmniPie.ViewModels
                         Preferences.Set(ConfigurationConstants.OmniPyPassword, Password);
                         Client.SetConnectionInfo(Host, Password);
                         break;
-                    //case nameof(TempBasalDuration):
-                    //    if (TempBasalDuration < 0.5m)
-                    //        TempBasalDuration = 0.5m;
-                    //    if (TempBasalDuration > 12m)
-                    //        TempBasalDuration = 12m;
-
-                    //    TempBasalDuration = Math.Round(TempBasalDuration * 2) / 2m;
-                    //    break;
-                    //case nameof(TempBasalRate):
-                    //    if (TempBasalRate < 0m)
-                    //        TempBasalRate = 0m;
-                    //    if (TempBasalRate > 30m)
-                    //        TempBasalRate = 30m;
-                    //    TempBasalRate = Math.Round(TempBasalDuration * 20) / 20m;
-                    //    break;
                 }
             };
 
@@ -85,18 +51,6 @@ namespace OmniPie.ViewModels
             Client.SetConnectionInfo(Host, Password);
 
             VerifyConnectionCommand = new Command(async() => DebugOut = await Client.VerifyConnection());
-            StatusCommand = new Command(async () => DebugOut = await Client.UpdateStatus(), () => true);
-            SetTempBasalCommand = new Command(async () => DebugOut = await Client.SetTempBasal(TempBasalRate, TempBasalDuration), () => true);
-            CancelTempBasalCommand = new Command(async () => DebugOut = await Client.CancelTempBasal(), () => true);
-            DownloadHistoryCommand  = new Command(async () => DebugOut = await Client.DownloadHistory(), () => true);
-            ShowHistoryCommand =
-                new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new HistoryPage(new HistoryPageModel(await Client.ReadHistory()))));
-        }
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async Task Locate()

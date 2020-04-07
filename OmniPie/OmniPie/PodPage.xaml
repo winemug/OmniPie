@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OmniPie.PodPage">
+    <ContentPage.Content>
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Read Status" Command="{Binding StatusCommand}" IsEnabled="{Binding ClientCanConnect}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Rate: "/>
+                <Entry Text="{Binding TempBasalRate}" WidthRequest="80"/>
+                <Label Text="Hours: "/>
+                <Entry Text="{Binding TempBasalDuration}" WidthRequest="80"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Set Temp Basal" Command="{Binding SetTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+                <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+            </StackLayout>
+            <StackLayout>
+                <Label Text="Debug Output:"/>
+                <Label Text="{Binding DebugOut}"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>

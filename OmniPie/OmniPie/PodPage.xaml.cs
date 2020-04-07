@@ -10,12 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace OmniPie
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HistoryPage : ContentPage
+    public partial class PodPage : ContentPage
     {
-        public HistoryPage()
+        public PodPage()
         {
             InitializeComponent();
-            BindingContext = new HistoryViewModel();
+            BindingContext = new PodViewModel();
         }
     }
 }
