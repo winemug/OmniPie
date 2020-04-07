@@ -97,7 +97,7 @@ namespace OmniPie.Api
             var entries = new List<OmniPyHistoryEntry>();
             if (File.Exists(DbPath))
             {
-                using (var conn = new SqliteConnection() {ConnectionString = $"Data Source=:{DbPath}:"})
+                using (var conn = new SqliteConnection() {ConnectionString = $"Data Source={DbPath}"})
                 {
                     await conn.OpenAsync();
                     var cmd = conn.CreateCommand();
@@ -108,13 +108,13 @@ namespace OmniPie.Api
                     {
                         entries.Add(new OmniPyHistoryEntry
                         {
-                            Timestamp = DateTimeOffset.FromUnixTimeMilliseconds((long) reader[0]),
-                            Progress = (int) reader[1],
-                            Minutes = (int) reader[2],
-                            Command = (string) reader[3],
-                            Delivered = (decimal) reader[4],
-                            Canceled = (decimal) reader[5],
-                            Reservoir = (decimal) reader[6]
+                            Timestamp = DateTimeOffset.FromUnixTimeMilliseconds((long) reader.GetInt64(0)),
+                            Progress = reader.GetInt32(1),
+                            Minutes = reader.GetInt32(2),
+                            Command = reader.GetString(3),
+                            Delivered = reader.GetDecimal(4),
+                            Canceled = reader.GetDecimal(5),
+                            Reservoir = reader.GetDecimal(6)
                         });
                     }
                 }
