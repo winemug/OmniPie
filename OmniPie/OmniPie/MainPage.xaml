@@ -11,7 +11,7 @@
             <Label Text="OmniPy Address:"/>
             <StackLayout Orientation="Horizontal">
                 <Entry Text="{Binding Host}" WidthRequest="180"/>
-                <Button Text="Locate" Command="{Binding LocateCommand}" IsEnabled="{Binding ClientCanConnect}"/>
+                <Button Text="Locate" Command="{Binding LocateCommand}"/>
             </StackLayout>
             <Label Text="Password:"/>
             <StackLayout Orientation="Horizontal">
