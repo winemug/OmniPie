@@ -39,7 +39,8 @@ namespace OmniPie.ViewModels
         public ICommand StatusCommand { get; set; }
         public ICommand SetTempBasalCommand { get; set;}
         public ICommand CancelTempBasalCommand { get; set; }
-
+        public ICommand DownloadHistoryCommand { get; set; }
+        public ICommand ShowHistoryCommand { get; }
         public string DebugOut { get; set; }
 
         private readonly OmniPyClient Client;
@@ -87,7 +88,9 @@ namespace OmniPie.ViewModels
             StatusCommand = new Command(async () => DebugOut = await Client.UpdateStatus(), () => true);
             SetTempBasalCommand = new Command(async () => DebugOut = await Client.SetTempBasal(TempBasalRate, TempBasalDuration), () => true);
             CancelTempBasalCommand = new Command(async () => DebugOut = await Client.CancelTempBasal(), () => true);
-
+            DownloadHistoryCommand  = new Command(async () => DebugOut = await Client.DownloadHistory(), () => true);
+            ShowHistoryCommand =
+                new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new HistoryPage(new HistoryPageModel(await Client.ReadHistory()))));
         }
 
         [NotifyPropertyChangedInvocator]

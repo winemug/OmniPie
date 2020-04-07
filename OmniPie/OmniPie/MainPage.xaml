@@ -33,6 +33,8 @@
                 <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
+                <Button Text="Download History" Command="{Binding DownloadHistoryCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+                <Button Text="Show History" Command="{Binding ShowHistoryCommand}"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
             </StackLayout>
