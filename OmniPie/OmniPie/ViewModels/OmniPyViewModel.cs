@@ -27,12 +27,21 @@ namespace OmniPie.ViewModels
         public string Password { get; set; }
 
         public ICommand LocateCommand { get; set; }
+        public bool LocateEnabled { get; set; }
         public ICommand VerifyConnectionCommand { get; set; }
+        public ICommand PingCommand { get; set; }
+        public bool PingEnabled { get; set; }
+        
+        public ICommand VerifyRileyLinkCommand { get; set; }
+        public ICommand RestartCommand { get; set; }
+        public ICommand ShutdownCommand { get; set; }
 
         public OmniPyViewModel(Page page) : base(page)
         {
             LocateCommand = new Command(async () => await Locate(), () => true);
-
+            LocateEnabled = true;
+            PingEnabled = false;
+            
             PropertyChanged += (sender, args) =>
             {
                 switch (args.PropertyName)
@@ -42,6 +51,7 @@ namespace OmniPie.ViewModels
                         Preferences.Set(ConfigurationConstants.OmniPyAddress, Host);
                         Preferences.Set(ConfigurationConstants.OmniPyPassword, Password);
                         Client.SetConnectionInfo(Host, Password);
+                        PingEnabled = !string.IsNullOrEmpty(Host);
                         break;
                 }
             };
@@ -51,11 +61,16 @@ namespace OmniPie.ViewModels
             Client.SetConnectionInfo(Host, Password);
 
             VerifyConnectionCommand = new Command(async() => DebugOut = await Client.VerifyConnection());
+            PingCommand = new Command(async () => DebugOut = await Ping());
+            ShutdownCommand = new Command(async () => DebugOut = await Client.Shutdown());
+            RestartCommand = new Command(async () => DebugOut = await Client.Restart());
+            VerifyRileyLinkCommand = new Command(async() => DebugOut = await Client.VerifyRileyLink());
         }
 
         private async Task Locate()
         {
             ClientCanConnect = false;
+            LocateEnabled = false;
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             try
             {
@@ -72,9 +87,28 @@ namespace OmniPie.ViewModels
             {
                 cts.Dispose();
                 ClientCanConnect = await Client.WhenClientCanConnectChanged().FirstAsync();
+                LocateEnabled = true;
             }
         }
 
+        private async Task<string> Ping()
+        {
+            PingEnabled = false;
+            var ping = new Ping();
+            try
+            {
+                var pr = await ping.SendPingAsync(Host, 3000);
+                return $"Ping reply received in {pr.RoundtripTime} ms";
+            }
+            catch (Exception e)
+            {
+                return $"No ping reply received. Error: {e}";
+            }
+            finally
+            {
+                PingEnabled = true;
+            }
+        }
         private async Task<string> Discover(CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();

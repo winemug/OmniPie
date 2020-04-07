@@ -11,12 +11,20 @@
             <Label Text="OmniPy Address:"/>
             <StackLayout Orientation="Horizontal">
                 <Entry Text="{Binding Host}" WidthRequest="180"/>
-                <Button Text="Locate" Command="{Binding LocateCommand}"/>
+                <Button Text="Locate" Command="{Binding LocateCommand}" IsEnabled="{Binding LocateEnabled}"/>
+                <Button Text="Ping" Command="{Binding PingCommand}" IsEnabled="{Binding PingEnabled}"/>
             </StackLayout>
             <Label Text="Password:"/>
             <StackLayout Orientation="Horizontal">
                 <Entry Text="{Binding Password}" IsPassword="True" WidthRequest="180"/>
                 <Button Text="Verify" Command="{Binding VerifyConnectionCommand}" IsEnabled="{Binding ClientCanConnect}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Verify RL" Command="{Binding VerifyRileyLinkCommand}" IsEnabled="{Binding ClientCanConnect}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Restart" Command="{Binding RestartCommand}" IsEnabled="{Binding ClientCanConnect}"/>
+                <Button Text="Shutdown" Command="{Binding ShutdownCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <StackLayout>
                 <Label Text="Debug Output:"/>

@@ -117,7 +117,7 @@ namespace OmniPie.Api
                     {
                         entries.Add(new OmniPyHistoryEntry
                         {
-                            Timestamp = DateTimeOffset.FromUnixTimeMilliseconds((long) reader.GetInt64(0)),
+                            Timestamp = DateTimeOffset.FromUnixTimeMilliseconds(1000 * (long) reader.GetInt64(0)),
                             Progress = reader.GetInt32(1),
                             Minutes = reader.GetInt32(2),
                             Command = reader.GetString(3),
@@ -129,6 +129,30 @@ namespace OmniPie.Api
                 }
             }
             return entries;
+        }
+
+        public async Task<string> Shutdown()
+        {
+            using (var client = await GetSshClient())
+            {
+                return await client.RunCommandAsync($"sudo halt");
+            }
+        }
+
+        public async Task<string> Restart()
+        {
+            using (var client = await GetSshClient())
+            {
+                return await client.RunCommandAsync($"sudo reboot");
+            }
+        }
+
+        public async Task<string> VerifyRileyLink()
+        {
+            using (var client = await GetSshClient())
+            {
+                return await client.RunCommandAsync($"cd ~/omnipy && ./verify_rl.py");
+            }
         }
     }
 }
