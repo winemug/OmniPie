@@ -6,6 +6,11 @@
     <ContentPage.Content>
     <ScrollView>
         <StackLayout>
+            <StackLayout>
+                <Label Text="{Binding BasalStatusString1}"/>
+                <Label Text="{Binding BasalStatusString2}"/>
+                <Label Text="{Binding BasalStatusString3}"/>
+            </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Button Text="Read Status" Command="{Binding StatusCommand}" IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>

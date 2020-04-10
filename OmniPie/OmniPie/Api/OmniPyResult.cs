@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OmniPie.Api
 {
-    class OmniPyResult
+    public class OmniPyResult
     {
     }
 }
