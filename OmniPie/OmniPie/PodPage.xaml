@@ -20,6 +20,19 @@
                 <Button Text="Cancel Temp Basal" Command="{Binding CancelTempBasalCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
             </StackLayout>
             <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Lot: "/>
+                    <Entry Text="{Binding Lot}" WidthRequest="100"/>
+                    <Label Text="Serial: "/>
+                    <Entry Text="{Binding Serial}" WidthRequest="100"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Radio address: "/>
+                    <Entry Text="{Binding RadioAddress}" WidthRequest="150"/>
+                    <Button Text="Adopt Pod" Command="{Binding AdoptCommand}"  IsEnabled="{Binding ClientCanConnect}"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout>
                 <Label Text="Debug Output:"/>
                 <Label Text="{Binding DebugOut}"/>
             </StackLayout>

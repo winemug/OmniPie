@@ -88,6 +88,13 @@ namespace OmniPie.Api
                 return await client.RunCommandAsync($"cd ~/omnipy && ./omni.py canceltempbasal");
             }
         }
+        public async Task<string> AdoptPod(int lot, int serial, string radioAddress)
+        {
+            using (var client = await GetSshClient())
+            {
+                return await client.RunCommandAsync($"cd ~/omnipy && ./omni.py newpod {lot} {serial} {radioAddress}");
+            }
+        }
 
         private string DbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "omnipy.db");
 
